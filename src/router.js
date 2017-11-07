@@ -62,14 +62,67 @@ export const locking = {
 
 export const appRouter = [
     {
-        path: '/access',
-        redirect: '/access/index',
-        icon: 'key',
-        name: 'access',
-        title: '权限管理',
+        path: '/systemInfo',
+        
+        icon: 'navicon-round',
+        name: 'systemInfo',
+        title: '基础资料',
         component: Main,
         children: [
-            { path: 'index', title: '权限管理', name: 'access_index', component: resolve => { require(['./views/access/access.vue'], resolve); } }
+            { path: 'agent', title: '用户管理', name: 'agent', icon:'ios-people',
+            component: resolve => { require(['./views/systemInfo/agent/agent.vue'], resolve); } },
+            { path: 'index', title: '软件定价', name: 'pricing', icon:'flag',
+            component: resolve => { require(['./views/access/access.vue'], resolve); } },
+            { path: 'index', title: '折扣标准', name: 'discount', icon:'bookmark',
+            component: resolve => { require(['./views/access/access.vue'], resolve); } },
+            { path: 'index', title: '系统设置', name: 'setting', icon:'gear-b',
+            component: resolve => { require(['./views/access/access.vue'], resolve); } },
+        ]
+    },
+    {
+        path: '/access',
+        
+        icon: 'social-windows',
+        name: 'business',
+        title: '功能',
+        component: Main,
+        children: [
+            { path: 'index', title: '发空狗', name: 'deliver', icon:'locked',
+            component: resolve => { require(['./views/access/access.vue'], resolve); } },
+            { path: 'index', title: '充值', name: 'recharge', icon:'social-yen',
+            component: resolve => { require(['./views/access/access.vue'], resolve); } },
+            { path: 'index', title: '加密狗注册', name: 'register', icon:'pin',
+            component: resolve => { require(['./views/access/access.vue'], resolve); } },
+            { path: 'index', title: '余额调整', name: 'adjust', icon:'levels',
+            component: resolve => { require(['./views/access/access.vue'], resolve); } },
+            { path: 'index', title: 'APP注册信息', name: 'app', icon:'iphone',
+            component: resolve => { require(['./views/access/access.vue'], resolve); } },
+            { path: 'index', title: '客服管理', name: 'service', icon:'social-whatsapp',
+            component: resolve => { require(['./views/access/access.vue'], resolve); } },
+        ]
+    },
+    {
+        path: '/access',
+        
+        icon: 'connection-bars',
+        name: 'report',
+        title: '查询',
+        component: Main,
+        children: [
+            { path: 'index', title: '充值查询', name: 'chargeQuery', icon:'arrow-graph-up-right',
+            component: resolve => { require(['./views/access/access.vue'], resolve); } },
+            { path: 'index', title: '注册查询', name: 'registerQuery', icon:'arrow-graph-down-right',
+            component: resolve => { require(['./views/access/access.vue'], resolve); } },
+            { path: 'index', title: '加密狗到期查询', name: 'dogEndQuery', icon:'clock',
+            component: resolve => { require(['./views/access/access.vue'], resolve); } },
+            { path: 'index', title: '买空狗查询', name: 'buyDogQuery', icon:'unlocked',
+            component: resolve => { require(['./views/access/access.vue'], resolve); } },
+            { path: 'index', title: '对账单', name: 'accountChecking',icon:'checkmark-circled', 
+            component: resolve => { require(['./views/access/access.vue'], resolve); } },
+            { path: 'index', title: '客户远程信息', name: 'remoteInformation', icon:'ios-cloud',
+            component: resolve => { require(['./views/access/access.vue'], resolve); } },
+            { path: 'index', title: '试用版注册查询', name: 'trialQuery',icon:'ios-pulse', 
+            component: resolve => { require(['./views/access/access.vue'], resolve); } },
         ]
     },
     {

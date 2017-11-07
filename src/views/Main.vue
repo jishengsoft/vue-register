@@ -3,7 +3,7 @@
 </style>
 <template>
     <div id="main" class="main" :class="{'main-hide-text': hideMenuText}">
-        <div class="sidebar-menu-con" :style="{width: hideMenuText?'60px':'200px', overflow: hideMenuText ? 'visible' : 'auto', background: $store.state.menuTheme === 'dark'?'#495060':'white'}">
+        <div class="sidebar-menu-con" :style="{width: hideMenuText?'60px':'256px', overflow: hideMenuText ? 'visible' : 'auto', background: $store.state.menuTheme === 'dark'?'#495060':'white'}">
             <div class="logo-con">
                 <img v-show="!hideMenuText"  src="../images/logo.jpg">
                 <img v-show="hideMenuText" src="../images/logo-min.jpg">
@@ -11,7 +11,7 @@
             <sidebar-menu v-if="!hideMenuText" :menuList="menuList" :iconSize="14"/>
             <sidebar-menu-shrink :icon-color="menuIconColor" v-else :menuList="menuList"/>
         </div>
-        <div class="main-header-con" :style="{paddingLeft: hideMenuText?'60px':'200px'}">
+        <div class="main-header-con" :style="{paddingLeft: hideMenuText?'60px':'256px'}">
             <div class="main-header">
                 <div class="navicon-con">
                     <Button :style="{transform: 'rotateZ(' + (this.hideMenuText ? '-90' : '0') + 'deg)'}" type="text" @click="toggleClick">
@@ -67,7 +67,7 @@
                 <tags-page-opened :pageTagsList="pageTagsList"></tags-page-opened>
             </div>
         </div>
-        <div class="single-page-con" :style="{paddingLeft: hideMenuText?'60px':'200px'}">
+        <div class="single-page-con" :style="{paddingLeft: hideMenuText?'60px':'256px'}">
             <div class="single-page">
                 <router-view></router-view>
             </div>
