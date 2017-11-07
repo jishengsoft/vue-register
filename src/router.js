@@ -71,8 +71,8 @@ export const appRouter = [
         children: [
             { path: 'agent', title: '用户管理', name: 'agent', icon:'ios-people',
             component: resolve => { require(['./views/systemInfo/agent/agent.vue'], resolve); } },
-            { path: 'index', title: '软件定价', name: 'pricing', icon:'flag',
-            component: resolve => { require(['./views/access/access.vue'], resolve); } },
+            { path: 'pricing', title: '软件定价', name: 'pricing', icon:'flag',
+            component: resolve => { require(['./views/systemInfo/pricing/pricing.vue'], resolve); } },
             { path: 'index', title: '折扣标准', name: 'discount', icon:'bookmark',
             component: resolve => { require(['./views/access/access.vue'], resolve); } },
             { path: 'index', title: '系统设置', name: 'setting', icon:'gear-b',

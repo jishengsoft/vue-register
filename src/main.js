@@ -7,6 +7,8 @@ import Util from './libs/util';
 import App from './app.vue';
 import Cookies from 'js-cookie';
 import 'iview/dist/styles/iview.css';
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 
 import VueI18n from 'vue-i18n';
 import Locales from './locale';
@@ -17,6 +19,7 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(VueI18n);
 Vue.use(iView);
+Vue.use(ElementUI);
 
 // 自动设置语言
 const navLang = navigator.language;

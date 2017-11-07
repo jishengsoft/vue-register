@@ -1,25 +1,8 @@
 <template>
-<div style="padding:20px;background:#fff;margin:10px">
-    <Form ref="formInline" inline label-position="right" :label-width="80">
-        <FormItem label="公司名称" prop="searchCompany">
-        <Input  placeholder="请输入" v-model="searchCompany"></Input>
-        </FormItem>
-        
-        <FormItem>
-            <Button type="primary" >查询</Button>
-        </FormItem>
-    </Form>
-    <ButtonGroup>
-        <Button type="primary" icon="plus">新增</Button>
-        
-    </ButtonGroup>
-
-    
     <el-table 
     :data="agentList" 
-    height="500" 
+    height="600" 
     show-summary 
-    stripe
     :summary-method="getSummaries" 
     highlight-current-row>
     <el-table-column
@@ -60,24 +43,13 @@
         label="起始日期"
         >
       </el-table-column>
-      <el-table-column
-      
-      label="操作"
-     >
-      <template slot-scope="scope">
-        <el-button @click="handleClick(scope.row)" type="text" size="small">修改</el-button>
-        <el-button type="text" size="small">删除</el-button>
-      </template>
-    </el-table-column>
     </el-table>
-    </div>
 </template>
 <script>
     import util from '../../../libs/util.js'
     export default {
         data () {
             return {
-                searchCompany:'',
                 columns1: [
                     {
                         type: 'index',
