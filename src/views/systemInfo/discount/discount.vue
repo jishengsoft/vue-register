@@ -9,18 +9,26 @@
     <Modal
         v-model="modal1"
         :title="state"
+        width="350"
         footerHide
-        width ="350"
+       
         @on-cancel="cancel">
         <Form ref="formItem" :label-width="80" :model="formItem" :rules="ruleValidate">
+            <FormItem label="认领任务" prop="taskmoney">
+                <Select v-model="formItem.taskmoney" placeholder="请选择" style="width:200px">
+                    <Option value="0">0</Option>
+                    <Option value="2500">2500</Option>
+                    <Option value="5000">5000</Option>
+                </Select>
+            </FormItem>
             <FormItem label="软件" prop="softVersion">
-                <Input v-model="formItem.softVersion" placeholder="请输入..." style="width:200px"></Input>
+                
+                <Select v-model="formItem.softVersion" style="width:200px">
+                    <Option v-for="item in softVersionList" :value="item.softVersion" :key="item.softVersion">{{ item.softVersion }}</Option>
+                </Select>
             </FormItem>
-            <FormItem label="价格" prop="standardPrice">
-                <InputNumber v-model="formItem.standardPrice" placeholder="请输入..." style="width:200px"></InputNumber>
-            </FormItem>
-            <FormItem label="加点价" prop="sitePrice">
-                <InputNumber v-model="formItem.sitePrice" placeholder="请输入..." style="width:200px"></InputNumber>
+            <FormItem label="折扣" prop="discount">
+                <InputNumber v-model="formItem.discount" placeholder="请输入..."  style="width:200px"></InputNumber>
             </FormItem>
             
             <FormItem>
@@ -41,18 +49,18 @@
       >
     </el-table-column>
         <el-table-column
+        prop="taskmoney"
+        label="认领任务"
+        >
+      </el-table-column>
+      <el-table-column
         prop="softVersion"
         label="软件"
         >
       </el-table-column>
       <el-table-column
-        prop="standardPrice"
-        label="价格"
-        >
-      </el-table-column>
-      <el-table-column
-        prop="sitePrice"
-        label="加点价"
+        prop="discount"
+        label="折扣"
         >
       </el-table-column>
       
@@ -81,21 +89,24 @@
                 modal1:false,
                 state:'新增',
                 oldUsername:'',
+                oldtaskmoney:'',
+                oldsoftversion:'',
+                softVersionList:this.getSoftVersionList(),
                 formItem:{
+                    taskmoney:0,
                     softVersion:'',
-                    standardPrice:'',
-                    sitePrice:'',
+                    discount:0,
                    
                 },
                 ruleValidate:{
+                    taskmoney: [
+                        { required: true, message: '认领任务不能为空', trigger: 'change' }
+                    ],
                     softVersion: [
-                        { required: true, message: '软件名称不能为空', trigger: 'blur' }
+                        { required: true, message: '软件不能为空', trigger: 'change' }
                     ],
-                    standardPrice: [
-                        { required: true,type:'number', message: '价格不能为空', trigger: 'blur' }
-                    ],
-                    sitePrice: [
-                        { required: true,type:'number', message: '加点价不能为空', trigger: 'blur' }
+                    discount: [
+                        { required: true,type:'number', message: '折扣不能为空', trigger: 'blur' }
                     ],
                     
                 }
@@ -104,13 +115,18 @@
         methods:{
             getAgentList(){
                 let _this = this;
-                util.ajax.get('getSoftPrice.asp').then(function(response){
+                util.ajax.get('getDiscount.asp').then(function(response){
                     console.log(response.data);
                     _this.agentList = response.data;
                     _this.alldata = response.data;
                 })
             },
-            
+            getSoftVersionList(){
+                let _this = this;
+                util.ajax.get('getSoftPrice.asp').then(function(response){
+                    _this.softVersionList = response.data;
+                })
+            },
             
             
             ok(name){
@@ -118,10 +134,11 @@
                     let _this = this;
                     if (valid) {
                         let formdate = this.formItem;
-                        formdate.old = this.oldUsername;
-                        let url = 'addSoftPrice.asp';
+                        formdate.oldtaskmoney = this.oldtaskmoney;
+                        formdate.oldsoftversion = this.oldsoftversion;
+                        let url = 'addDiscount.asp';
                         if (this.state == '修改定价'){
-                            url = 'updateSoftPrice.asp';
+                            url = 'updateDiscount.asp';
                         }
                         
                         
@@ -145,25 +162,26 @@
                 this.modal1 = false;
             },
             clear(){
+                this.formItem.taskmoney = 0;
                 this.formItem.softVersion = '';
-                this.formItem.standardPrice = '';
-                this.formItem.sitePrice = '';
+                this.formItem.discount = 0;
                 
                 
             },
             add(){
                 this.clear();
-                this.state = '新增定价';
+                this.state = '新增折扣';
                 this.modal1 = true;
             },
             delrow(row){
                let _this = this;
-               this.$confirm('是否确定删除该定价?', '提示', {
+               this.$confirm('是否确定删除该折扣?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                     }).then(() => {
-                    util.ajax.get('delSoftPrice.asp',{params:{old:row.row.softVersion}}).then(function(response){
+                    util.ajax.get('delDiscount.asp',{params:{oldtaskmoney:row.row.taskmoney,
+                    oldsoftversion:row.row.softVersion}}).then(function(response){
                         if(response.data == 'success'){
                             _this.agentList.splice(row.$index, 1);
                             _this.$message({
@@ -179,13 +197,15 @@
                 
             },
             editrow(row){
+                this.formItem.taskmoney = parseInt(row.row.taskmoney);
+                console.log(row.row.taskmoney);
                 this.formItem.softVersion = row.row.softVersion;
-                this.formItem.standardPrice = row.row.standardPrice;
-                this.formItem.sitePrice = row.row.sitePrice;
+                this.formItem.discount = parseFloat(row.row.discount);
                 
                 this.modal1 = true;
-                this.state = '修改定价';
-                this.oldUsername = row.row.softVersion;
+                this.state = '修改折扣';
+                this.oldtaskmoney = row.row.taskmoney;
+                this.oldsoftversion = row.row.softVersion;
                 
             }
         }

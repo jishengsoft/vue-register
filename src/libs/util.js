@@ -1,5 +1,6 @@
 import axios from 'axios';
 import env from '../config/env';
+import dateUtil from './date';
 
 let util = {
 
@@ -17,8 +18,11 @@ const ajaxUrl = env === 'development'
 
 util.ajax = axios.create({
     baseURL: ajaxUrl,
-    timeout: 30000
+    timeout: 30000,
+    
 });
+
+util.ajax.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 util.inOf = function (arr, targetArr) {
     let res = true;
@@ -183,6 +187,26 @@ util.openPage = function (vm, name, title) {
     if (!hasOpened) {
         vm.$store.commit('increateTag', {name: name, title: title});
     }
+};
+
+util.toDate = function(date) {
+    let _date = new Date(date);
+    // IE patch start (#1422)
+    if (isNaN(_date.getTime()) && typeof date === 'string'){
+        _date = date.split('-').map(Number);
+        _date[1] += 1;
+        _date = new Date(..._date);
+    }
+    // IE patch end
+
+    if (isNaN(_date.getTime())) return null;
+    return _date;
+};
+
+util.formatDate = function(date, format) {
+   // date = toDate(date);
+   // if (!date) return '';
+    return dateUtil.format(date, format || 'yyyy-MM-dd');
 };
 
 export default util;

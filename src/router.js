@@ -73,10 +73,10 @@ export const appRouter = [
             component: resolve => { require(['./views/systemInfo/agent/agent.vue'], resolve); } },
             { path: 'pricing', title: '软件定价', name: 'pricing', icon:'flag',
             component: resolve => { require(['./views/systemInfo/pricing/pricing.vue'], resolve); } },
-            { path: 'index', title: '折扣标准', name: 'discount', icon:'bookmark',
-            component: resolve => { require(['./views/access/access.vue'], resolve); } },
-            { path: 'index', title: '系统设置', name: 'setting', icon:'gear-b',
-            component: resolve => { require(['./views/access/access.vue'], resolve); } },
+            { path: 'discount', title: '折扣标准', name: 'discount', icon:'bookmark',
+            component: resolve => { require(['./views/systemInfo/discount/discount.vue'], resolve); } },
+            { path: 'systemSetting', title: '系统设置', name: 'systemSetting', icon:'gear-b',
+            component: resolve => { require(['./views/systemInfo/systemSetting/systemSetting.vue'], resolve); } },
         ]
     },
     {
