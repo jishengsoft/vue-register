@@ -209,4 +209,14 @@ util.formatDate = function(date, format) {
     return dateUtil.format(date, format || 'yyyy-MM-dd');
 };
 
+util.getMonthBeginDay = function(){
+    let now = new Date();
+    console.log(now.getFullYear() +'-'+ formatDay(now.getMonth()+1)+'-'+'01');
+    return now.getFullYear() +'-'+ formatDay(now.getMonth()+1)+'-'+'01'; 
+}
+
+function formatDay(day){
+  return day<10?'0'+day:day;
+}
+
 export default util;
