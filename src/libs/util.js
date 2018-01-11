@@ -6,15 +6,15 @@ let util = {
 
 };
 util.title = function (title) {
-    title = title || 'iView admin';
+    title = title || '济胜软件售后服务平台';
     window.document.title = title;
 };
 
 const ajaxUrl = env === 'development'
     ? 'http://127.0.0.1/register'
     : env === 'production'
-    ? 'https://www.url.com'
-    : 'https://debug.url.com';
+    ? ''
+    : 'http://127.0.0.1/register';
 
 util.ajax = axios.create({
     baseURL: ajaxUrl,

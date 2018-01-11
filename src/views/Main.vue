@@ -6,7 +6,7 @@
         <div class="sidebar-menu-con" :style="{width: hideMenuText?'60px':'256px', overflow: hideMenuText ? 'visible' : 'auto', background: $store.state.menuTheme === 'dark'?'#495060':'white'}">
             <div class="logo-con">
                 <img v-show="!hideMenuText"  src="../images/logo.png">
-                <img v-show="hideMenuText" src="../images/logo-min.jpg">
+                <img v-show="hideMenuText" src="../images/logo-mini.png">
             </div>
             <sidebar-menu v-if="!hideMenuText" :menuList="menuList" :iconSize="14"/>
             <sidebar-menu-shrink :icon-color="menuIconColor" v-else :menuList="menuList"/>
@@ -34,13 +34,7 @@
                             <Icon type="locked" :size="20"></Icon>
                         </Tooltip>
                     </div>
-                    <div @click="showMessage" class="message-con">
-                        <Tooltip :content="messageCount > 0 ? '有' + messageCount + '条未读消息' : '无未读消息'" placement="bottom">
-                            <Badge :count="messageCount" dot>
-                                <Icon type="ios-bell" :size="22"></Icon>
-                            </Badge>
-                        </Tooltip>
-                    </div>
+                    
                     <div class="switch-theme-con">
                         <Row class="switch-theme" type="flex" justify="center" align="middle">
                             <theme-dropdown-menu></theme-dropdown-menu>

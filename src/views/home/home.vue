@@ -5,171 +5,123 @@
 <template>
     <div class="home-main">
         <Row>
-            <Col span="8">
-                <Row>
-                    <Card>
-                        <Row type="flex" class="user-infor">
-                            <Col span="8">
-                                <Row class-name="made-child-con-middle" type="flex" align="middle">
-                                    <img class="avator-img" :src="avatorPath" />
-                                </Row>
-                            </Col>
-                            <Col span="16" style="padding-left:6px;">
-                                <Row class-name="made-child-con-middle" type="flex" align="middle">
-                                    <div>
-                                        <b class="card-user-infor-name">Admin</b>
-                                        <p>super admin</p>
-                                    </div>
-                                </Row>
-                            </Col>
-                        </Row>
-                        <div class="line-gray"></div>
-                        <Row class="margin-top-8">
-                            <Col span="8"><p class="notwrap">上次登录时间:</p></Col>
-                            <Col span="16" class="padding-left-8">2017.09.12-13:32:20</Col>
-                        </Row>
-                        <Row class="margin-top-8">
-                            <Col span="8"><p class="notwrap">上次登录地点:</p></Col>
-                            <Col span="16" class="padding-left-8">北京</Col>
-                        </Row>
-                    </Card>
-                </Row>
-                <Row class="margin-top-10">
-                    <Card>
-                        <p slot="title" class="card-title">
-                            <Icon type="android-checkbox-outline"></Icon>
-                            待办事项
-                        </p>
-                        <a type="text" slot="extra" @click.prevent="addNewToDoItem">
-                            <Icon type="plus-round"></Icon>
-                        </a>
-                        <Modal
-                            v-model="showAddNewTodo"
-                            title="添加新的待办事项"
-                            @on-ok="addNew"
-                            @on-cancel="cancelAdd">
-                            <Row type="flex" justify="center">
-                                <Input v-model="newToDoItemValue" icon="compose" placeholder="请输入..." style="width: 300px" />
-                            </Row>
-                            <Row slot="footer">
-                                <Button type="text" @click="cancelAdd">取消</Button>
-                                <Button type="primary" @click="addNew">确定</Button>
-                            </Row>
-                        </Modal>
-                        <div class="to-do-list-con">
-                            <div v-for="(item, index) in toDoList" :key="index" class="to-do-item">
-                                <to-do-list-item :content="item.title"></to-do-list-item>
-                            </div>
-                        </div>
-                    </Card>
-                </Row>
-            </Col>
-            <Col span="16" class-name="padding-left-5">
-                <Row>
-                    <Col span="6">
-                        <infor-card
-                            id-name="user_created_count"
-                            :end-val="count.createUser"
-                            iconType="android-person-add"
-                            color="#2d8cf0"
-                            intro-text="今日新增用户"
-                        ></infor-card>
-                    </Col>
-                    <Col span="6" class-name="padding-left-5">
-                        <infor-card
-                            id-name="visit_count"
-                            :end-val="count.visit"
-                            iconType="ios-eye"
-                            color="#64d572"
-                            :iconSize="50"
-                            intro-text="今日浏览量"
-                        ></infor-card>
-                    </Col>
-                    <Col span="6" class-name="padding-left-5">
-                        <infor-card
-                            id-name="collection_count"
-                            :end-val="count.collection"
-                            iconType="upload"
-                            color="#ffd572"
-                            intro-text="今日数据采集量"
-                        ></infor-card>
-                    </Col>
-                    <Col span="6" class-name="padding-left-5">
-                        <infor-card
-                            id-name="transfer_count"
-                            :end-val="count.transfer"
-                            iconType="shuffle"
-                            color="#f25e43"
-                            intro-text="今日服务调用量"
-                        ></infor-card>
-                    </Col>
-                </Row>
-                <Row class="margin-top-10">
-                    <Card :padding="0">
+            
+            <Col span="12" class-name="padding-left-5">
+                
+                <Row class="margin-top-10" >
+                    <Card :padding="0" style="height:400px">
                         <p slot="title" class="card-title">
                             <Icon type="map"></Icon>
-                            今日服务调用地理分布
+                            上周注册
                         </p>
                         <div class="map-con">
-                            <Col span="10">
-                                <map-data-table :cityData="cityData" height="281" :style-obj="{margin: '12px 0 0 11px'}"></map-data-table>
-                            </Col>
-                            <Col span="14" class="map-incon">
-                                <Row type="flex" justify="center" align="middle">
-                                    <home-map :city-data="cityData"></home-map>
-                                </Row>
-                            </Col>
+                            <el-table 
+                            :data="registerList" 
+                            
+                            size="small"
+                            height="350"
+                            stripe
+                             
+                            highlight-current-row>
+                            <el-table-column
+                            type="index"
+                            
+                            >
+                            </el-table-column>
+                                <el-table-column
+                                prop="company"
+                                label="公司名称"
+                                width="100"
+                                >
+                            </el-table-column>
+                            <el-table-column
+                                prop="oldversion"
+                                label="老版本"
+                                width="100"
+                                >
+                            </el-table-column>
+                            <el-table-column
+                                prop="newversion"
+                                label="新版本"
+                                width="100"
+                                >
+                            </el-table-column>
+                            <el-table-column
+                                prop="consumeJS"
+                                label="金额"
+                                width="50"
+                                >
+                            </el-table-column>
+                            <el-table-column
+                                prop="registerdate"
+                                label="注册时间"
+                                width="150"
+                                >
+                            </el-table-column>
+                           
+                            
+                            </el-table>
+                            
+                        </div>
+                    </Card>
+                </Row>
+            </Col>
+            <Col span="12" class-name="padding-left-5">
+                
+                <Row class="margin-top-10" >
+                    <Card :padding="0" style="height:400px">
+                        <p slot="title" class="card-title">
+                            <Icon type="map"></Icon>
+                            上周充值
+                        </p>
+                        <div class="map-con">
+                            <el-table 
+                            :data="chargeList" 
+                            height="350"
+                            size="small"
+                            
+                            stripe
+                             
+                            highlight-current-row>
+                            <el-table-column
+                            type="index"
+                            
+                            >
+                            </el-table-column>
+                                <el-table-column
+                                prop="company"
+                                label="公司名称"
+                                
+                                >
+                            </el-table-column>
+                            <el-table-column
+                                prop="rechargedate"
+                                label="日期"
+                                
+                                >
+                            </el-table-column>
+                            <el-table-column
+                                prop="rechargemoney"
+                                label="充值金额"
+                                
+                                >
+                            </el-table-column>
+                            <el-table-column
+                                prop="memo"
+                                label="备注"
+                                
+                                >
+                            </el-table-column>
+                           
+                            
+                            </el-table>
+                            
                         </div>
                     </Card>
                 </Row>
             </Col>
         </Row>
-        <Row class="margin-top-10">
-            <Col span="8">
-                <Card>
-                    <p slot="title" class="card-title">
-                        <Icon type="android-map"></Icon>
-                        上周每日来访量统计
-                    </p>
-                    <div class="data-source-row">
-                        <visite-volume></visite-volume>
-                    </div>
-                </Card>
-            </Col>
-            <Col span="8" class="padding-left-10">
-                <Card>
-                    <p slot="title" class="card-title">
-                        <Icon type="ios-pulse-strong"></Icon>
-                        数据来源统计
-                    </p>
-                    <div class="data-source-row">
-                        <data-source-pie></data-source-pie>
-                    </div>
-                </Card>
-            </Col>
-            <Col span="8" class="padding-left-10">
-                <Card>
-                    <p slot="title" class="card-title">
-                        <Icon type="android-wifi"></Icon>
-                        各类用户服务调用变化统计
-                    </p>
-                    <div class="data-source-row">
-                        <user-flow></user-flow>
-                    </div>
-                </Card>
-            </Col>
-        </Row>
-        <Row class="margin-top-10">
-            <Card>
-                <p slot="title" class="card-title">
-                    <Icon type="ios-shuffle-strong"></Icon>
-                    上周每日服务调用量(万)
-                </p>
-                <div class="line-chart-con">
-                    <service-requests></service-requests>
-                </div>
-            </Card>
-        </Row>
+        
     </div>
 </template>
 
@@ -184,6 +136,7 @@ import countUp from './components/countUp.vue';
 import inforCard from './components/inforCard.vue';
 import mapDataTable from './components/mapDataTable.vue';
 import toDoListItem from './components/toDoListItem.vue';
+import util from '../../libs/util.js';
 
 export default {
     components: {
@@ -199,32 +152,13 @@ export default {
     },
     data () {
         return {
-            toDoList: [
-                {
-                    title: '去iView官网学习完整的iView组件'
-                },
-                {
-                    title: '去iView官网学习完整的iView组件'
-                },
-                {
-                    title: '去iView官网学习完整的iView组件'
-                },
-                {
-                    title: '去iView官网学习完整的iView组件'
-                },
-                {
-                    title: '去iView官网学习完整的iView组件'
-                }
-            ],
-            count: {
-                createUser: 496,
-                visit: 3264,
-                collection: 24389305,
-                transfer: 39503498
-            },
+            
+            
             cityData: cityData,
             showAddNewTodo: false,
-            newToDoItemValue: ''
+            newToDoItemValue: '',
+            registerList:this.getRegisterList(),
+            chargeList:this.getChargeList()
         };
     },
     computed: {
@@ -252,6 +186,54 @@ export default {
         cancelAdd () {
             this.showAddNewTodo = false;
             this.newToDoItemValue = '';
+        },
+        getRegisterList(){
+            let _this = this;
+            let pageSize = this.pageSize||'100';
+            let currentPage = this.currentPage||'1';
+            let searchCompany = this.searchCompany||'';
+            let now = new Date();
+            
+            let begint = now.getTime()-1000*60*60*24*(6+now.getDay());
+
+            let lastWeekBegin = new Date(begint);
+            let endtt = now.getTime()-1000*60*60*24*(now.getDay());
+            let lastWeekEnd = new Date(endtt);
+            
+            let searchDate = util.formatDate(lastWeekBegin);
+            let searchEndDate = util.formatDate(lastWeekEnd);
+            util.ajax.get('getMainRegisterQuery.asp?rows='+pageSize+'&page='+currentPage+'&client='+searchCompany+
+            '&searchDate='+searchDate+'&searchEndDate='+searchEndDate)
+            .then(function(response){
+                
+                
+                _this.registerList = response.data.rows;
+              
+            })
+        },
+        getChargeList(){
+            let _this = this;
+            let pageSize = this.pageSize||'100';
+            let currentPage = this.currentPage||'1';
+            let searchCompany = this.searchCompany||'';
+            let now = new Date();
+            
+            let begint = now.getTime()-1000*60*60*24*(6+now.getDay());
+
+            let lastWeekBegin = new Date(begint);
+            let endtt = now.getTime()-1000*60*60*24*(now.getDay());
+            let lastWeekEnd = new Date(endtt);
+            
+            let searchDate = util.formatDate(lastWeekBegin);
+            let searchEndDate = util.formatDate(lastWeekEnd);
+            util.ajax.get('getRecharge.asp?rows='+pageSize+'&page='+currentPage+'&client='+searchCompany+
+            '&searchDate='+searchDate+'&searchEndDate='+searchEndDate)
+            .then(function(response){
+                
+                
+                _this.chargeList = response.data.rows;
+              
+            })
         }
     }
 };
