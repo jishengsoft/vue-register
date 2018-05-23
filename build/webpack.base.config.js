@@ -2,6 +2,8 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+
+
 function resolve (dir) {
     return path.join(__dirname, dir);
 }
@@ -72,7 +74,8 @@ module.exports = {
         extensions: ['.js', '.vue'],
         alias: {
             'vue': 'vue/dist/vue.esm.js',
-            '@': resolve('../src')
+            '@': resolve('../src'),
+            'vendor': path.resolve(__dirname, '../src/vendor'),
         }
     }
 };

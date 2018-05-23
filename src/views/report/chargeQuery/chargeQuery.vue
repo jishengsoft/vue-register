@@ -15,6 +15,7 @@
         
         <FormItem>
             <Button type="primary" @click="searchByCompany" >查询</Button>
+            <Button type="primary" @click="export2Excel" >导出</Button>
         </FormItem>
     </Form>
     
@@ -66,7 +67,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
-      :page-sizes="[10, 20, 30, 40,50]"
+      :page-sizes="[10, 20, 30, 40,50,100]"
       :page-size="pageSize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="totalRecord">
@@ -194,7 +195,19 @@
                 this.currentPage = 1;
                 this.getAgentList();
                 console.log(this.agentList);
-            }
+            },
+            export2Excel() {
+               let  companyName = '';
+               if (this.searchCompany){
+                   companyName = this.companyList.find(item => item.username === this.searchCompany)['company'];
+               }
+               
+               let tHeader = [ '公司名称',  '日期', '充值金额','备注']; //对应表格输出的title
+    　　　　　　let filterVal = [ 'company',  'rechargedate','rechargemoney','memo']; // 对应表格输出的数据
+               let list = this.agentList;
+                util.export2Excel(companyName+'_充值查询',tHeader,filterVal,list);
+               
+    　　　　}
         }
     }
 </script>

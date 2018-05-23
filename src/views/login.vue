@@ -88,7 +88,7 @@ export default {
                     this.form.password)
                     .then(function(response){
                         if(response.data == 'success'){
-                            let inFifteenMinutes = new Date(new Date().getTime() + 15 * 60 * 1000);
+                            let inFifteenMinutes = new Date(new Date().getTime() + 60 * 60 * 1000);
                             Cookies.set('user', _this.form.userName, {
                                             expires: inFifteenMinutes
                                         });

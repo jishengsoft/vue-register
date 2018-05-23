@@ -1,7 +1,11 @@
 import Vue from 'vue';
 import iView from 'iview';
 import VueRouter from 'vue-router';
-import {routers, otherRouter, appRouter} from './router';
+import {
+    routers,
+    otherRouter,
+    appRouter
+} from './router';
 import Vuex from 'vuex';
 import Util from './libs/util';
 import App from './app.vue';
@@ -46,7 +50,7 @@ const router = new VueRouter(RouterConfig);
 router.beforeEach((to, from, next) => {
     iView.LoadingBar.start();
     Util.title(to.meta.title);
-    if (Cookies.get('locking') === '1' && to.name !== 'locking') {  // 判断当前是否是锁定状态
+    if (Cookies.get('locking') === '1' && to.name !== 'locking') { // 判断当前是否是锁定状态
         iView.LoadingBar.finish();
         next(false);
         router.replace({
@@ -56,11 +60,11 @@ router.beforeEach((to, from, next) => {
         iView.LoadingBar.finish();
         next(false);
     } else {
-        if (!Cookies.get('user') && to.name !== 'login') {  // 判断是否已经登录且前往的页面不是登录页
+        if (!Cookies.get('user') && to.name !== 'login') { // 判断是否已经登录且前往的页面不是登录页
             next({
                 name: 'login'
             });
-        } else if (Cookies.get('user') && to.name === 'login') {  // 判断是否已经登录且前往的是登录页
+        } else if (Cookies.get('user') && to.name === 'login') { // 判断是否已经登录且前往的是登录页
             next({
                 name: 'home'
             });
@@ -85,14 +89,12 @@ const store = new Vuex.Store({
         tagsList: [...otherRouter.children],
         pageOpenedList: [],
         currentPageName: '',
-        currentPath: [
-            {
-                title: '首页',
-                path: '',
-                name: 'home_index'
-            }
-        ],  // 面包屑数组
-        openedSubmenuArr: [],  // 要展开的菜单数组
+        currentPath: [{
+            title: '首页',
+            path: '',
+            name: 'home_index'
+        }], // 面包屑数组
+        openedSubmenuArr: [], // 要展开的菜单数组
         menuTheme: '', // 主题
         theme: ''
     },
@@ -100,35 +102,35 @@ const store = new Vuex.Store({
 
     },
     mutations: {
-        setTagsList (state, list) {
+        setTagsList(state, list) {
             state.tagsList.push(...list);
         },
-        increateTag (state, tagObj) {
+        increateTag(state, tagObj) {
             state.pageOpenedList.splice(1, 0, tagObj);
         },
-        removeTag (state, name) {
+        removeTag(state, name) {
             state.pageOpenedList.map((item, index) => {
                 if (item.name === name) {
                     state.pageOpenedList.splice(index, 1);
                 }
             });
         },
-        moveToSecond (state, index) {
+        moveToSecond(state, index) {
             let openedPage = state.pageOpenedList[index];
             state.pageOpenedList.splice(index, 1);
             state.pageOpenedList.splice(1, 0, openedPage);
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
         },
-        setOpenedList (state) {
+        setOpenedList(state) {
             state.pageOpenedList = localStorage.pageOpenedList ? JSON.parse(localStorage.pageOpenedList) : [otherRouter.children[0]];
         },
-        setCurrentPath (state, pathArr) {
+        setCurrentPath(state, pathArr) {
             state.currentPath = pathArr;
         },
-        setCurrentPageName (state, name) {
+        setCurrentPageName(state, name) {
             state.currentPageName = name;
         },
-        addOpenSubmenu (state, name) {
+        addOpenSubmenu(state, name) {
             let hasThisName = false;
             let isEmpty = false;
             if (name.length === 0) {
@@ -141,25 +143,25 @@ const store = new Vuex.Store({
                 state.openedSubmenuArr.push(name);
             }
         },
-        clearOpenedSubmenu (state) {
+        clearOpenedSubmenu(state) {
             state.openedSubmenuArr.length = 0;
         },
-        changeMenuTheme (state, theme) {
+        changeMenuTheme(state, theme) {
             state.menuTheme = theme;
         },
-        changeMainTheme (state, mainTheme) {
+        changeMainTheme(state, mainTheme) {
             state.theme = mainTheme;
         },
-        lock (state) {
+        lock(state) {
             Cookies.set('locking', '1');
         },
-        unlock (state) {
+        unlock(state) {
             Cookies.set('locking', '0');
         },
-        setMenuList (state, menulist) {
+        setMenuList(state, menulist) {
             state.menuList = menulist;
         },
-        updateMenulist (state) {
+        updateMenulist(state) {
             let accessCode = parseInt(Cookies.get('access'));
             let menuList = [];
             appRouter.forEach((item, index) => {
@@ -203,7 +205,7 @@ const store = new Vuex.Store({
             });
             state.menuList = menuList;
         },
-        setAvator (state, path) {
+        setAvator(state, path) {
             localStorage.avatorImgPath = path;
         }
     },
@@ -220,18 +222,20 @@ new Vue({
     data: {
         currentPageName: ''
     },
-    mounted () {
+    mounted() {
         this.currentPageName = this.$route.name;
     },
-    created () {
+    created() {
         let tagsList = [];
         appRouter.map((item) => {
+
             if (item.children.length <= 1) {
                 tagsList.push(item.children[0]);
             } else {
                 tagsList.push(...item.children);
             }
         });
+
         this.$store.commit('setTagsList', tagsList);
     }
 });

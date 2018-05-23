@@ -17,7 +17,8 @@
                         <div class="map-con">
                             <el-table 
                             :data="registerList" 
-                            
+                            show-summary
+                            :summary-method="getSummaries" 
                             size="small"
                             height="350"
                             stripe
@@ -49,7 +50,7 @@
                             <el-table-column
                                 prop="consumeJS"
                                 label="金额"
-                                width="50"
+                                width="60"
                                 >
                             </el-table-column>
                             <el-table-column
@@ -79,7 +80,8 @@
                             :data="chargeList" 
                             height="350"
                             size="small"
-                            
+                            show-summary
+                            :summary-method="getChargeSummaries"
                             stripe
                              
                             highlight-current-row>
@@ -211,6 +213,38 @@ export default {
               
             })
         },
+        getSummaries(param) {
+                const { columns, data } = param;
+                const sums = [];
+                
+                columns.forEach((column, index) => {
+                if (index === 0) {
+                    sums[index] = '合计';
+                    return;
+                }
+                if (index != 4){
+                    sums[index] = '';
+                    return;
+                }
+                const values = data.map(item => Number(item[column.property]));
+                
+                if (!values.every(value => isNaN(value))) {
+                    sums[index] = values.reduce((prev, curr) => {
+                    const value = Number(curr);
+                    if (!isNaN(value)) {
+                        return prev + curr;
+                    } else {
+                        return prev;
+                    }
+                    }, 0);
+                    
+                } else {
+                    sums[index] = 'N/A';
+                }
+                });
+                
+                return sums;
+            },
         getChargeList(){
             let _this = this;
             let pageSize = this.pageSize||'100';
@@ -234,7 +268,39 @@ export default {
                 _this.chargeList = response.data.rows;
               
             })
-        }
+        },
+        getChargeSummaries(param) {
+                const { columns, data } = param;
+                const sums = [];
+                
+                columns.forEach((column, index) => {
+                if (index === 0) {
+                    sums[index] = '合计';
+                    return;
+                }
+                if (index != 3){
+                    sums[index] = '';
+                    return;
+                }
+                const values = data.map(item => Number(item[column.property]));
+                
+                if (!values.every(value => isNaN(value))) {
+                    sums[index] = values.reduce((prev, curr) => {
+                    const value = Number(curr);
+                    if (!isNaN(value)) {
+                        return prev + curr;
+                    } else {
+                        return prev;
+                    }
+                    }, 0);
+                    
+                } else {
+                    sums[index] = 'N/A';
+                }
+                });
+                
+                return sums;
+            },
     }
 };
 </script>

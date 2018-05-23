@@ -219,4 +219,21 @@ function formatDay(day){
   return day<10?'0'+day:day;
 }
 
+util.export2Excel = function(companyName,tHeader,filterVal,list) {
+    //let companyName = this.companyList.find(item => item.username === this.searchCompany)['company'];
+　　　　　　require.ensure([], () => {
+　　　　　　　　const { export_json_to_excel } = require('../vendor/Export2Excel');
+　　　　　　　//　const tHeader = [ '操作','客户名称', '加密狗号', '老版本', '新版本','金额','余额','注册时间','注册码','备注']; //对应表格输出的title
+　　　　　　//　　const filterVal = [ '操作','client', 'dognumber', 'oldversion', 'newversion','consumeJS','jsmoney','registerdate','registercode','memo']; // 对应表格输出的数据
+　　　　　//　　　const list = this.agentList;
+              
+　　　　　　　　const data = formatJson(filterVal, list);
+        
+　　　　　　　　export_json_to_excel(tHeader, data, companyName); //对应下载文件的名字
+　　　　　　})
+　　　　}
+　function　formatJson(filterVal, jsonData) {
+　　　　　　return jsonData.map(v => filterVal.map(j => v[j]))
+　　　　}
+
 export default util;

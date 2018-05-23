@@ -3,7 +3,7 @@
     <Form ref="formInline" inline label-position="right" :label-width="80">
         <FormItem label="公司名称" prop="searchCompany">
         <Select v-model="searchCompany" style="width:120px" clearable>
-                        <Option v-for="item in companyList" :value="item.username" :key="item.username">{{ item.company }}</Option>
+            <Option v-for="item in companyList" :value="item.username" :key="item.username">{{ item.company }}</Option>
         </Select>
         </FormItem>
         <FormItem label="开始日期">
@@ -15,6 +15,7 @@
         
         <FormItem>
             <Button type="primary" @click="searchByCompany" >查询</Button>
+            <Button type="primary" @click="export2Excel" >导出</Button>
         </FormItem>
     </Form>
     
@@ -101,7 +102,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
-      :page-sizes="[10, 20, 30, 40,50]"
+      :page-sizes="[10, 20, 30, 40,50,100]"
       :page-size="pageSize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="totalRecord">
@@ -229,7 +230,27 @@
                 this.currentPage = 1;
                 this.getAgentList();
                 console.log(this.agentList);
-            }
+            },
+            export2Excel() {
+               let companyName = this.companyList.find(item => item.username === this.searchCompany)['company'];
+               let tHeader = [ '操作','客户名称', '加密狗号', '老版本', '新版本','金额','余额','注册时间','注册码','备注']; //对应表格输出的title
+    　　　　　　let filterVal = [ '操作','client', 'dognumber', 'oldversion', 'newversion','consumeJS','jsmoney','registerdate','registercode','memo']; // 对应表格输出的数据
+               let list = this.agentList;
+                util.export2Excel(companyName+'_对帐单',tHeader,filterVal,list);
+                /*
+                require.ensure([], () => {
+    　　　　　　　　const { export_json_to_excel } = require('../../../vendor/Export2Excel');
+    　　　　　　　　const tHeader = [ '操作','客户名称', '加密狗号', '老版本', '新版本','金额','余额','注册时间','注册码','备注']; //对应表格输出的title
+    　　　　　　　　const filterVal = [ '操作','client', 'dognumber', 'oldversion', 'newversion','consumeJS','jsmoney','registerdate','registercode','memo']; // 对应表格输出的数据
+    　　　　　　　　const list = this.agentList;
+    　　　　　　　　const data = this.formatJson(filterVal, list);
+                   
+    　　　　　　　　export_json_to_excel(tHeader, data, companyName+'_对帐单'); //对应下载文件的名字
+    　　　　　　}) */
+    　　　　},
+    　　　　formatJson(filterVal, jsonData) {
+    　　　　　　return jsonData.map(v => filterVal.map(j => v[j]))
+    　　　　}
         }
     }
 </script>
