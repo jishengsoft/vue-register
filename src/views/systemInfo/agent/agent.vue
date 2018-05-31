@@ -21,8 +21,14 @@
        
         @on-cancel="cancel">
         <Form ref="formItem" :label-width="80" :model="formItem" :rules="ruleValidate">
+            <FormItem label="用户类型" prop="type">
+                <Select v-model="formItem.type" placeholder="请选择">
+                    <Option value="0">合作伙伴</Option>
+                    <Option value="1">内部用户</Option>
+                </Select>
+            </FormItem>
             <FormItem label="公司名称" prop="company">
-                <Input v-model="formItem.company" placeholder="请输入..."></Input>
+                <Input v-model="formItem.company" placeholder="请输入..."  :disabled='isDisabled'></Input>
             </FormItem>
             <FormItem label="用户名" prop="username">
                 <Input v-model="formItem.username" placeholder="请输入..."></Input>
@@ -113,13 +119,14 @@
         data () {
             return {
                 searchCompany:'',
-                
+                isDisabled:false,
                 agentList: this.getAgentList(),
                 alldata:[],
                 modal1:false,
                 state:'新增',
                 oldUsername:'',
                 formItem:{
+                    type:'',
                     company:'',
                     username:'',
                     password:'',
@@ -231,6 +238,7 @@
                 this.modal1 = false;
             },
             clear(){
+                this.formItem.type = '';
                 this.formItem.username = '';
                 this.formItem.password = '';
                 this.formItem.company = '';
@@ -242,6 +250,7 @@
             add(){
                 this.clear();
                 this.state = '新增用户';
+                this.isDisabled = false;
                 this.modal1 = true;
             },
             delrow(row){
@@ -267,6 +276,7 @@
                 
             },
             editrow(row){
+                this.formItem.type = row.row.type;
                 this.formItem.username = row.row.username;
                 this.formItem.password = row.row.password;
                 this.formItem.company = row.row.company;
@@ -274,6 +284,7 @@
                 this.formItem.taskmoney = ''+row.row.taskmoney;
                 this.formItem.begindate = row.row.begindate;
                 this.modal1 = true;
+                this.isDisabled = true;
                 this.state = '修改用户';
                 this.oldUsername = row.row.username;
                 console.log(row);

@@ -90,7 +90,7 @@ export default {
       spanLeft: 4,
       spanRight: 20,
       currentPageName: "",
-      hideMenuText: false,
+      hideMenuText: this.hideOption(),
       userName: "",
       showFullScreenBtn: window.navigator.userAgent.indexOf("MSIE") < 0,
       isFullScreen: false,
@@ -119,6 +119,14 @@ export default {
     }
   },
   methods: {
+    hideOption() {
+	  var a = window.navigator.userAgent.indexOf('Mobile');
+                if (a > -1) { // 判断是否是手机端
+                    return true;
+                } else {
+                    return false;
+                }
+	},
     init() {
       this.$store.commit("setCurrentPageName", this.$route.name);
       let pathArr = util.setCurrentPath(this, this.$route.name);
@@ -331,7 +339,7 @@ export default {
       themeLink.setAttribute("href", stylesheetPath);
     }
     // 显示打开的页面的列表
-    this.$store.commit("setOpenedList");
+  //this.$store.commit("setOpenedList");
   }
 };
 </script>

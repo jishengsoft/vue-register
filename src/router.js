@@ -97,6 +97,8 @@ export const appRouter = [
             component: resolve => { require(['./views/business/adjustment/adjustment.vue'], resolve); } },
             { path: 'app', title: 'APP注册信息', name: 'app', icon:'iphone',
             component: resolve => { require(['./views/business/appRegister/appRegister.vue'], resolve); } },
+            { path: 'appUser', title: 'APP分销用户', name: 'appUser', icon:'android-person',
+            component: resolve => { require(['./views/business/appDistribution/appDistribution.vue'], resolve); } },
             { path: 'service', title: '客服管理', name: 'service', icon:'social-whatsapp',
             component: resolve => { require(['./views/business/mainagentQQ/mainagentQQ.vue'], resolve); } },
         ]

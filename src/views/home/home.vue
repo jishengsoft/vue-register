@@ -207,18 +207,31 @@ export default {
             util.ajax.get('getMainRegisterQuery.asp?rows='+pageSize+'&page='+currentPage+'&client='+searchCompany+
             '&searchDate='+searchDate+'&searchEndDate='+searchEndDate)
             .then(function(response){
-                
+                for (var i=0;i<response.data.rows.length;i++){                  
+                    if (response.data.rows[i].type == 1){
+                        response.data.rows.splice(i--,1);
+                    }
+                }
                 
                 _this.registerList = response.data.rows;
               
             })
         },
         getSummaries(param) {
+				let _this = this;
                 const { columns, data } = param;
                 const sums = [];
                 
                 columns.forEach((column, index) => {
-                if (index === 0) {
+				if (index === 0) {
+                    var jsonLength = 0;
+                    for(var item in _this.registerList){
+                        jsonLength++;
+                    }
+                    sums[index] = jsonLength + '套';
+                    return;
+                }
+                if (index === 1) {
                     sums[index] = '合计';
                     return;
                 }
@@ -263,7 +276,11 @@ export default {
             util.ajax.get('getRecharge.asp?rows='+pageSize+'&page='+currentPage+'&client='+searchCompany+
             '&searchDate='+searchDate+'&searchEndDate='+searchEndDate)
             .then(function(response){
-                
+                for (var i=0;i<response.data.rows.length;i++){                  
+                    if (response.data.rows[i].type == 1){
+                        response.data.rows.splice(i--,1);
+                    }
+                }
                 
                 _this.chargeList = response.data.rows;
               

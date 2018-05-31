@@ -9,10 +9,43 @@
         
         <FormItem>
             <Button type="primary" @click="searchByCompany" >查询</Button>
+            <Button type="primary" icon="plus" @click="add">新增</Button>
         </FormItem>
     </Form>
-    
 
+    <Modal
+      v-model="modal1"
+      :title="state"
+      footerHide
+      @on-cancel="cancel">
+      <Form ref="formItem" :label-width="80" :model="formItem" :rules="ruleValidate">
+        <FormItem label="公司名称" prop="company">
+                <Input v-model="formItem.Company" placeholder="请输入..."></Input>
+            </FormItem>
+            <FormItem label="用户名" prop="username">
+                <Input v-model="formItem.UserName" placeholder="请输入..."></Input>
+            </FormItem>
+            <FormItem label="密码" prop="password">
+                <Input v-model="formItem.Password" placeholder="请输入..." type="password"></Input>
+            </FormItem>
+            <FormItem label="服务器IP" prop="serverIp">
+                <Input v-model="formItem.ServerIP" placeholder="请输入..."></Input>
+            </FormItem>
+            <FormItem label="域名" prop="domain">
+                <Input v-model="formItem.Domain" placeholder="请输入..."></Input>
+            </FormItem>
+            <FormItem label="域名2" prop="domain1">
+                <Input v-model="formItem.domain1" placeholder="请输入..."></Input>
+            </FormItem>
+            <FormItem label="备注" prop="remark">
+                <Input v-model="formItem.remark" placeholder="请输入..."></Input>
+            </FormItem>
+            <FormItem>
+                <Button type="primary" @click="ok('formItem')">确定</Button>
+                <Button type="ghost" style="margin-left: 8px" @click="cancel">取消</Button>
+            </FormItem>
+    </Form>
+    </Modal>
     
     <el-table 
     :data="agentList" 
@@ -69,6 +102,12 @@
         
         >
       </el-table-column>
+      <el-table-column label="操作">
+      <template slot-scope="scope">
+        <el-button @click="editrow(scope)" type="text" size="small">修改</el-button>
+        <el-button @click="delrow(scope)" type="text" size="small">删除</el-button>
+      </template>
+    </el-table-column>
       
       
     </el-table>
@@ -89,6 +128,7 @@ var qs = require("qs");
 export default {
   data() {
     return {
+      modal1:false,
       searchCompany: "",
       companyList: this.getCompanyList(),
       beginDate: util.getMonthBeginDay(),
@@ -104,26 +144,26 @@ export default {
       agentList: [],
       border: true,
       formItem: {
-        company: "",
-        User: "",
-        uuid: "",
-        version: "0",
-        remark: "",
-        agent: ""
+        Company: '',
+        UserName:'',
+        Password:'',
+        Domain: '',
+        domain1:'',
+        remark: '',
       },
       ruleValidate: {
-        company: [
-          { required: true, message: "公司名称不能为空", trigger: "blur" }
-        ],
-        User: [{ required: true, message: "用户名不能为空", trigger: "blur" }],
-        uuid: [{ required: true, message: "注册码不能为空", trigger: "blur" }],
+        // company: [
+        //   { required: true, message: "公司名称不能为空", trigger: "blur" }
+        // ]
+        // User: [{ required: true, message: "用户名不能为空", trigger: "blur" }],
+        // uuid: [{ required: true, message: "注册码不能为空", trigger: "blur" }],
 
-        version: [
-          { required: true, message: "版本不能为空", trigger: "change" }
-        ],
-        agent: [
-          { required: true, message: "代理商不能为空", trigger: "change" }
-        ]
+        // version: [
+        //   { required: true, message: "版本不能为空", trigger: "change" }
+        // ],
+        // agent: [
+        //   { required: true, message: "代理商不能为空", trigger: "change" }
+        // ]
       }
     };
   },
@@ -203,7 +243,87 @@ export default {
       this.currentPage = 1;
       this.getAgentList();
       console.log(this.agentList);
-    }
+    },
+    clear(){
+                this.formItem.Company = '';
+                this.formItem.UserName = '';
+                this.formItem.Password = '';
+                this.formItem.ServerIP = '';
+                this.formItem.Domain = '';
+                this.formItem.domain1 = '';
+                this.formItem.remark = '';
+                
+            },
+            add(){
+                this.clear();
+                this.state = '新增客户远程信息';
+                this.modal1 = true;
+            },
+    cancel(){
+      this.modal1 = false;
+    },
+    ok(name){
+                this.$refs[name].validate((valid) => {
+                    let _this = this;
+                    if (valid) {
+                        let formdate = this.formItem;
+                        formdate.old = this.oldUsername;
+                        let url = 'addRemote.asp';
+                        if (this.state == '修改客户远程信息'){
+                            url = 'updateRemote.asp';
+                        }
+                        
+                        util.ajax.post(url,qs.stringify(formdate)).then(function(response){
+                            if (response.data == 'success'){
+                                _this.modal1 = false;
+                                _this.getAgentList();
+                            }
+                        })
+                        _this.$message({
+                                type: 'success',
+                                message: '操作成功!'
+                            });
+                    } else {
+                        
+                        this.modal1 = true;
+                        return false;
+                    }
+                })
+            },
+    editrow(row){
+                this.formItem.Company = row.row.Company;
+                this.formItem.UserName = row.row.UserName;
+                this.formItem.Password = row.row.Password;
+                this.formItem.ServerIP = row.row.ServerIP;
+                this.formItem.Domain = row.row.domain;
+                this.formItem.domain1 = row.row.domain1 ||'';
+                this.formItem.remark = row.row.remark ||'';
+                this.modal1 = true;
+                this.state = '修改客户远程信息';
+                this.oldUsername = row.row.UserName;
+            },
+    delrow(row){
+               let _this = this;
+               this.$confirm('是否确定删除该客户?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                    }).then(() => {
+                    util.ajax.get('delRemote.asp',{params:{old:row.row.UserName}}).then(function(response){
+                        if(response.data == 'success'){
+                            _this.agentList.splice(row.$index, 1);
+                            _this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                        }
+                    })
+                    
+                    }).catch(() => {
+                            
+                    });
+                
+            },
   }
 };
 </script>

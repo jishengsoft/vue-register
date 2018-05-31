@@ -4,7 +4,11 @@
         <FormItem label="公司名称" prop="searchCompany">
         <Input  placeholder="请输入" v-model="searchCompany"></Input>
         </FormItem>
-        
+        <FormItem  label="代理商" prop="searchAgent">
+        <Select v-model="searchAgent" style="width:150px" clearable>
+            <Option v-for="item in companyList" :value="item.username" :key="item.username">{{ item.company }}</Option>
+        </Select>
+        </FormItem>
         <FormItem>
             <Button type="primary" @click="searchByCompany" >查询</Button>
         </FormItem>
@@ -137,6 +141,7 @@
         data () {
             return {
                 searchCompany:'',
+                searchAgent:'',
                 companyList:this.getCompanyList(), 
                 
                 alldata:[],
@@ -182,7 +187,9 @@
                 let pageSize = this.pageSize||'10';
                 let currentPage = this.currentPage||'1';
                 let searchCompany = this.searchCompany||'';
-                util.ajax.get('getAppRegister.asp?rows='+pageSize+'&page='+currentPage+'&company='+searchCompany)
+                let searchAgent = this.searchAgent||'';
+                util.ajax.get('getAppRegister.asp?rows='+pageSize+'&page='+currentPage+'&company='+searchCompany
+                +'&agent='+searchAgent)
                 .then(function(response){
                     console.log(response.data);
                     _this.totalRecord = response.data.total;

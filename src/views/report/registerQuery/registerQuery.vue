@@ -1,6 +1,12 @@
 <template>
 <div style="padding:20px;background:#fff;margin:10px">
     <Form ref="formInline" inline label-position="right" :label-width="80">
+        <FormItem label="用户类型" prop="searchType">
+         <Select v-model="searchType" style="width:120px" clearable>
+             <Option value="0">合作伙伴</Option>
+             <Option value="1">内部用户</Option>
+         </Select>   
+        </FormItem>
         <FormItem label="公司名称" prop="searchCompany">
         <Select v-model="searchCompany" style="width:120px" clearable>
                         <Option v-for="item in companyList" :value="item.username" :key="item.username">{{ item.company }}</Option>
@@ -96,6 +102,7 @@
     export default {
         data () {
             return {
+                searchType:'',
                 searchCompany:'',
                 companyList:this.getCompanyList(), 
                 beginDate:util.getMonthBeginDay(),
@@ -145,12 +152,13 @@
             getAgentList(){
                 let _this = this;
                 let pageSize = this.pageSize||'10';
+                let searchType = this.searchType||'';
                 let currentPage = this.currentPage||'1';
                 let searchCompany = this.searchCompany||'';
                 let searchDate = this.beginDate?util.formatDate(this.beginDate):'';
                 let searchEndDate = this.endDate?util.formatDate(this.endDate):'';
                 util.ajax.get('getMainRegisterQuery.asp?rows='+pageSize+'&page='+currentPage+'&client='+searchCompany+
-                '&searchDate='+searchDate+'&searchEndDate='+searchEndDate)
+                '&searchDate='+searchDate+'&searchEndDate='+searchEndDate+'&searchType='+searchType)
                 .then(function(response){
                    
                     _this.totalRecord = response.data.total;
