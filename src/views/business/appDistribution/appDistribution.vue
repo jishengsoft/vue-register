@@ -31,10 +31,15 @@
                 <Input v-model="formItem.password" placeholder="请输入..."></Input>
             </FormItem>
             <FormItem label="APP版本" prop="version">
-                <Input v-model="formItem.version" placeholder="请输入..."></Input>
+                <Select v-model="formItem.version" placeholder="请选择版本">
+                    <Option v-for="item in vList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    <!-- <Option value="0">普通版</Option>
+                    <Option value="1">客户跟踪</Option>
+                    <Option value="2">增强版</Option> -->
+                </Select>
             </FormItem>
             <FormItem label="站点数" prop="count">
-                <InputNumber v-model="formItem.count" placeholder="请输入..."></InputNumber>
+                <InputNumber v-model="formItem.count" placeholder="请输入..." min=1></InputNumber>
             </FormItem>
             <FormItem>
                 <Button type="primary" @click="ok('formItem')">确定</Button>
@@ -99,6 +104,20 @@ import util from '../../../libs/util.js'
     export default {
         data () {
             return {
+                vList: [
+                    {
+                        value: '0',
+                        label: '普通版'
+                    },
+                    {
+                        value: '1',
+                        label: '客户跟踪'
+                    },
+                    {
+                        value: '2',
+                        label: '增强版'
+                    },
+                ],
                 searchCompany:'',
                 isDisabled:false,
                 agentList: this.getAgentList(),
@@ -111,7 +130,7 @@ import util from '../../../libs/util.js'
                     company:'',
                     username:'',
                     password:'',
-                    version:'',
+                    version:'0',
                     count:''
                 },
                 ruleValidate:{
@@ -123,7 +142,21 @@ import util from '../../../libs/util.js'
             getAgentList(){
                 let _this = this;
                 util.ajax.get('getAppUser.asp').then(function(response){
-                  
+                    for(var i in response.data.rows){
+                        var v_number = response.data.rows[i].version;
+                        switch(v_number){
+                            case '0':
+                               response.data.rows[i].version = '普通版' ;
+                               break;
+                            case '1':
+                               response.data.rows[i].version = '客户跟踪' ;
+                               break;
+                            case '2':
+                               response.data.rows[i].version = '增强版' ;
+                               break;
+
+                        }
+                    }
                     _this.agentList = response.data.rows;
                     _this.alldata = response.data.rows;
                 })
@@ -132,7 +165,19 @@ import util from '../../../libs/util.js'
                 this.formItem.username = row.row.username;
                 this.formItem.password = row.row.password;
                 this.formItem.company = row.row.company;
-                this.formItem.version = row.row.version;
+                switch(row.row.version){
+                            case '普通版':
+                               this.formItem.version = '0' ;
+                               break;
+                            case '客户跟踪':
+                               this.formItem.version = '1' ;
+                               break;
+                            case '增强版':
+                               this.formItem.version = '2' ;
+                               break;
+
+                        }
+                // this.formItem.version = row.row.version;
                 this.formItem.count = row.row.count;
 
                 this.modal1 = true;
@@ -182,7 +227,7 @@ import util from '../../../libs/util.js'
                 this.formItem.username = '';
                 this.formItem.password = '';
                 this.formItem.company = '';
-                this.formItem.version = '';
+                this.formItem.version = '0';
                 this.formItem.count = '';
                 
             },

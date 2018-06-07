@@ -28,10 +28,10 @@
                 </Select>
             </FormItem>
             <FormItem label="公司名称" prop="company">
-                <Input v-model="formItem.company" placeholder="请输入..."  :disabled='isDisabled'></Input>
+                <Input v-model="formItem.company" placeholder="请输入..."></Input>
             </FormItem>
             <FormItem label="用户名" prop="username">
-                <Input v-model="formItem.username" placeholder="请输入..."></Input>
+                <Input v-model="formItem.username" placeholder="请输入..." :readonly='isDisabled'></Input>
             </FormItem>
             <FormItem label="密码" prop="password">
                 <Input v-model="formItem.password" placeholder="请输入..." type="password"></Input>

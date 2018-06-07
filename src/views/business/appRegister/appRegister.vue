@@ -193,6 +193,15 @@
                 .then(function(response){
                     console.log(response.data);
                     _this.totalRecord = response.data.total;
+                    for(var i in response.data.rows){
+                        if(!response.data.rows[i].agent){
+                            for(var j in _this.companyList){
+                                if(_this.companyList[j].username==_this.searchAgent){
+                                    response.data.rows[i].agent = _this.companyList[j].company;
+                                }
+                            }
+                        }
+                    }
                     _this.agentList = response.data.rows;
                     _this.alldata = response.data.rows;
                 })
