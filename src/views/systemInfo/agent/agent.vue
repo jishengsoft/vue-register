@@ -132,7 +132,7 @@
                     password:'',
                     mobile:'',
                     taskmoney:0,
-                    begindate:''
+                    begindate:' '
                 },
                 ruleValidate:{
                     company: [

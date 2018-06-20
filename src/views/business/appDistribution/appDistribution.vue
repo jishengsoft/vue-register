@@ -39,7 +39,7 @@
                 </Select>
             </FormItem>
             <FormItem label="站点数" prop="count">
-                <InputNumber v-model="formItem.count" placeholder="请输入..." min=1></InputNumber>
+                <InputNumber v-model="formItem.count"  :min="1"></InputNumber>
             </FormItem>
             <FormItem>
                 <Button type="primary" @click="ok('formItem')">确定</Button>
@@ -131,7 +131,7 @@ import util from '../../../libs/util.js'
                     username:'',
                     password:'',
                     version:'0',
-                    count:''
+                    count:'1'
                 },
                 ruleValidate:{
 
@@ -228,7 +228,7 @@ import util from '../../../libs/util.js'
                 this.formItem.password = '';
                 this.formItem.company = '';
                 this.formItem.version = '0';
-                this.formItem.count = '';
+                this.formItem.count = '1';
                 
             },
             add(){
