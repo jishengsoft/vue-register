@@ -49,6 +49,9 @@
             <FormItem label="起始日期" prop="begindate">
                  <DatePicker type="date" placeholder="选择日期" format="yyyy-MM-dd" v-model="formItem.begindate"></DatePicker>
             </FormItem>
+            <FormItem label="结束日期" prop="enddate" v-show="false">
+                 <DatePicker type="date" placeholder="选择日期" format="yyyy-MM-dd" v-model="formItem.enddate"></DatePicker>
+            </FormItem>
             <FormItem>
                 <Button type="primary" @click="ok('formItem')">确定</Button>
                 <Button type="ghost" style="margin-left: 8px" @click="cancel">取消</Button>
@@ -132,7 +135,8 @@
                     password:'',
                     mobile:'',
                     taskmoney:0,
-                    begindate:' '
+                    begindate:' ',
+                    enddate:''
                 },
                 ruleValidate:{
                     company: [
